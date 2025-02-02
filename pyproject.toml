@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "lc-system"
+version = "0.1.0"
+description = "lc system design"
+authors = ["Gshopping <zays.kim@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
