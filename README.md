@@ -14,3 +14,7 @@ Initial design might be like below which is only focusing on Functional requirem
 
 
 ![](./requirements/initial_design_for_functional_requirement.JPG)
+
+
+DB: Nosql: Casandra
+    sql: Postgresql
