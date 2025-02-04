@@ -18,3 +18,7 @@ Initial design might be like below which is only focusing on Functional requirem
 
 DB: Nosql: Casandra
     sql: Postgresql
+
+
+
+> missing point: pagination

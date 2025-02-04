@@ -1,17 +1,16 @@
+import json
 from django.http import HttpRequest
 from lc.dto import DTO
 from dataclasses import dataclass
 from lc.dto import DTOVerificationResult, DTOVerificationStatus
 
-@dataclass
+
 class LoginDTO(DTO):
 
-    username:str
-    password:str
-    
     def __init__(self, request:HttpRequest):
-        self.username = request.POST.get("username")
-        self.password = request.POST.get("password")
+        body = json.loads(request.body)
+        self.username = body.get("username")
+        self.password = body.get("password")
 
     def verify(self) -> DTOVerificationResult:
 
@@ -22,15 +21,15 @@ class LoginDTO(DTO):
         
 
 
-@dataclass
-class JoinDTO(DTO):
-    username:str
-    password:str
-    email:str
+
+class SignupDTO(DTO):
+
     def __init__(self, request:HttpRequest):
-        self.username = request.POST.get("username")
-        self.password = request.POST.get("password")
-        self.email = request.POST.get("email")
+        body = json.loads(request.body)
+        
+        self.username = body.get("username")
+        self.password = body.get("password")
+        self.email = body.get("email")
 
     def verify(self) -> DTOVerificationResult:
 
@@ -42,6 +41,10 @@ class JoinDTO(DTO):
         
 
         return DTOVerificationResult(DTOVerificationStatus.PASS)
+
+
+
+
 
 @dataclass(frozen=True)
 class JwtDTO(DTO):

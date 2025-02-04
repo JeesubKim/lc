@@ -5,7 +5,7 @@ from dataclasses import dataclass
 @dataclass
 class BaseResponse(ABC):
     success:bool
-
+    status:int
     def to_dict(self):
         print(self)
         data = vars(self)
@@ -15,6 +15,7 @@ class BaseResponse(ABC):
 @dataclass
 class SuccessResponse(BaseResponse):
     success:bool=True
+    status:int=200
     data:any=None
 
 
@@ -22,4 +23,5 @@ class SuccessResponse(BaseResponse):
 @dataclass
 class FailResponse(BaseResponse):
     success:bool=False
+    status:int=500
     error:str=""
