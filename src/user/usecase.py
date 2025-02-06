@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 from lc.usecase import Usecase
 from lc.response import SuccessResponse, FailResponse
-from lc.auth import encode_jwt, Authentication
-from .dto import LoginDTO, SignupDTO
+from lc.auth import get_jwt_refresh_both
+from .dto import LoginDTO, SignupDTO, TokenRefreshDTO
 from .entity import User
 from .external.database import UserDBPort
 
@@ -36,13 +36,13 @@ class UserLoginUsecase(Usecase):
 
 
         if user and bcrypt.checkpw(self._dto.password.encode("utf-8"), user.password):
-            encoded_jwt = encode_jwt({
+            token = get_jwt_refresh_both({
                 'data': user.username
             })
-
-            return SuccessResponse(data=encoded_jwt)
+            
+            return SuccessResponse(data=token)
         else:
-            return FailResponse(error="Invalid username or password")
+            return FailResponse(error="Invalid username or password", status=401)
         
 
 class UserSignupUsecase(Usecase):
@@ -67,6 +67,18 @@ class UserSignupUsecase(Usecase):
 
         
         return SuccessResponse()
+
+
+
+class UserRefreshTokenUsecase(Usecase):
+
+    def __init__(self, dto: TokenRefreshDTO, user_db_port: UserDBPort):
+        super().__init__(dto=dto, db_port=user_db_port)
+
+    def _run(self):
+        token = get_jwt_refresh_both({})
+        
+        return SuccessResponse(data=token)
 
         
 

@@ -43,7 +43,18 @@ class SignupDTO(DTO):
         return DTOVerificationResult(DTOVerificationStatus.PASS)
 
 
+class TokenRefreshDTO(DTO):
+    def __init__(self, request:HttpRequest):
+        body = json.loads(request.body)
+        
+        self.ref_token = body.get("ref")
+    
+    def verify(self) -> DTOVerificationResult:
 
+        if not self.ref_token:
+            return DTOVerificationResult(status=DTOVerificationStatus.FAIL, message="Token is empty")
+        
+        return DTOVerificationResult(DTOVerificationStatus.PASS)
 
 
 @dataclass(frozen=True)
