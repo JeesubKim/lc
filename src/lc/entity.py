@@ -7,3 +7,6 @@ class BaseEntity(models.Model):
 
     class Meta:
         abstract=True
+
+    def to_dict(self):
+        return vars(self)

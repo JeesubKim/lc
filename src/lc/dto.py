@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from django.http import HttpRequest
 from enum import Enum
 
 class DTOVerificationStatus(Enum):
@@ -12,6 +13,11 @@ class DTOVerificationResult:
     message: str=""
 
 class DTO(ABC):
+    def __init__(self, request:HttpRequest):
+
+        auth_header = request.headers.get("Authorization")
+        if auth_header:
+            self.jwt_token = auth_header.split("Bearer ")[1]
 
     def to_dict(self):
 

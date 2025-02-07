@@ -82,6 +82,11 @@ def encode_jwt(payload):
     
     return encoded_jwt
 
+def decode_jwt(token:str):
+    return jwt.decode(jwt=token, key=KEY, algorithms=ALGORITHM)
+            
+    
+    
 
 def get_jwt_refresh_both(payload):
 

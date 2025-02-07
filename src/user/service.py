@@ -2,8 +2,8 @@ from django.utils.decorators import method_decorator
 from django.http import HttpRequest
 from lc.response import SuccessResponse, FailResponse
 from lc.auth import Authentication, Auth
-from .usecase import UserLoginUsecase, UserSignupUsecase, UserRefreshTokenUsecase
-from .dto import LoginDTO, SignupDTO, TokenRefreshDTO
+from .usecase import UserLoginUsecase, UserSignupUsecase, UserRefreshTokenUsecase, GetUserInformationUsecase
+from .dto import LoginDTO, SignupDTO, TokenRefreshDTO, GetUserDTO
 from .external.database import UserDBAdapter
 
 # from presentation import UserInfoPresentation
@@ -19,7 +19,11 @@ class UserService:
     @method_decorator(Auth())
     def get_user_info(self, request:HttpRequest):
         
-        return Presentation.json_response(SuccessResponse())
+        if request.method == "GET":
+            get_user_dto = GetUserDTO(request)
+            usecase = GetUserInformationUsecase(dto=get_user_dto, user_db_port=self._user_db_adapter)
+            response = usecase.exec()
+        return Presentation.json_response(response)
 
         # auth_header = request.headers.get("Authorization")
         # if not auth_header:
@@ -57,7 +61,7 @@ class UserService:
                 return Presentation.json_response(FailResponse())
             
             ref_token = self.token_map[access_token]
-            
+
             del self.token_map[access_token]
             del self.token_map[ref_token]
             self.refresh_token_cache.remove(ref_token)

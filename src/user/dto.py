@@ -8,6 +8,7 @@ from lc.dto import DTOVerificationResult, DTOVerificationStatus
 class LoginDTO(DTO):
 
     def __init__(self, request:HttpRequest):
+        super().__init__(request)
         body = json.loads(request.body)
         self.username = body.get("username")
         self.password = body.get("password")
@@ -21,10 +22,21 @@ class LoginDTO(DTO):
         
 
 
+class GetUserDTO(DTO):
 
+    def __init__(self, request:HttpRequest):
+        super().__init__(request)
+        self.user = request.user
+    def verify(self) -> DTOVerificationResult:
+
+        if not self.user:
+            return DTOVerificationResult(status=DTOVerificationStatus.FAIL, message="User is none")
+        
+        return DTOVerificationResult(DTOVerificationStatus.PASS)
 class SignupDTO(DTO):
 
     def __init__(self, request:HttpRequest):
+        super().__init__(request)
         body = json.loads(request.body)
         
         self.username = body.get("username")
@@ -45,6 +57,7 @@ class SignupDTO(DTO):
 
 class TokenRefreshDTO(DTO):
     def __init__(self, request:HttpRequest):
+        super().__init__(request)
         body = json.loads(request.body)
         
         self.ref_token = body.get("ref")
